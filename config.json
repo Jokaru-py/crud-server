@@ -1,0 +1,14 @@
+{   
+    "server": {
+        "host": "127.0.0.1",                   
+        "port": "8000"                          
+    },    
+    "db": {
+        "name": "postgres",
+        "host": "pg_db",
+        "port": 5432,
+        "dbname": "postgres",
+        "user": "postgres",
+        "password": "123"        
+    }    
+}

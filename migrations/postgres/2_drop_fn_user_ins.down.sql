@@ -1,0 +1,1 @@
+DROP FUNCTION public.fn_user_ins(text, text, text);

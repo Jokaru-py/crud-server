@@ -1,0 +1,1 @@
+DROP FUNCTION public.fn_user_upd(text, text, text, text);

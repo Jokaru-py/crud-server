@@ -1,0 +1,1 @@
+DROP FUNCTION public.fn_user_del(text);

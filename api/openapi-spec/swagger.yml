@@ -1,0 +1,158 @@
+swagger: "2.0"
+info:
+  description: CRUD server
+  title: CRUD server
+  version: 0.1.0
+basePath: /api/v1
+schemes:
+  - http
+produces:
+  - application/json
+consumes:
+  - application/json
+definitions:
+  Error:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        description: Описание ошибки.
+  User:
+    type: object
+    required:
+      - name
+      - age
+      - email
+    properties:
+      name:
+        description: ФИО пользователя
+        type: string
+        x-go-custom-tag: sql:"name"
+      age:
+        description: Возраст
+        type: string
+        x-go-custom-tag: sql:"age"
+      email:
+        description: эл. адрес
+        type: string
+        x-go-custom-tag: sql:"email"
+      id:
+        description: ID пользователя в БД.
+        type: string
+        x-go-custom-tag: sql:"id"
+  UserUploadResponse:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        description: ID пользователя в БД.
+  AllUserResponse:
+    type: object
+    properties:
+      Users:
+        type: array
+        description: Список всех пользователей.
+        items:
+          $ref: "#/definitions/User" 
+paths:
+  /users:
+    post:
+      description: Добавить нового пользователя.
+      tags:
+        - Users
+      produces:
+        - application/json
+      parameters: 
+        - name: loadUser
+          in: body
+          description: Данные пользователя
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses: 
+        200:
+          description: Результат запроса
+          schema:
+            $ref: "#/definitions/UserUploadResponse"
+        400:
+          description: Некорректный запрос
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      description: Получить всех пользователей.
+      tags:
+        - Users
+      produces:
+        - application/json
+      operationId: GetUsers
+      responses: 
+        200:
+          description: Результат запроса
+          schema:
+            $ref: "#/definitions/AllUserResponse"
+        400:
+          description: Некорректный запрос
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      description: Удалить пользователя.
+      tags:
+        - Users
+      produces:
+        - application/json
+      parameters: 
+        - name: IDUSer
+          in: body
+          description: ID пользователя.
+          schema:
+            $ref: '#/definitions/UserUploadResponse'
+      responses: 
+        200:
+          description: Результат запроса
+        400:
+          description: Некорректный запрос
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: "#/definitions/Error"
+    patch:
+      description: Обновить данные пользователя по ID.
+      tags:
+        - Users
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters: 
+        - name: IDUSer
+          in: body
+          description: ID пользователя.
+          schema:
+            $ref: '#/definitions/User'
+      responses: 
+        200:
+          description: Результат запроса
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: Некорректный запрос
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: "#/definitions/Error"

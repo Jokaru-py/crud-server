@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+  server:
+    build: ./
+    command: ./main
+    ports: 
+      - 65432:8000
+    depends_on: 
+      - pg_db
+    links: 
+      - pg_db
+
+  pg_db:
+    image: postgres:11
+    restart: always
+    env_file: 
+      - .env
+    volumes:
+      - ./pg:/pgdata
+    ports:
+      - 5435:5432
+  
+  migrate:
+    image: migrate/migrate
+    volumes: 
+      - ./migrations/postgres/:/migrations
+    command: 
+      ["-path", "/migrations", "-database",  "postgres://postgres:123@pg_db:5432/postgres?sslmode=disable", "up", "5"]
+    depends_on: 
+      - pg_db
+    links: 
+      - pg_db
