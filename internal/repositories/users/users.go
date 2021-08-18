@@ -84,6 +84,7 @@ func (repo *Repository) UpdateUser(params users.PatchUsersParams) (*models.User,
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var user models.User
 	for rows.Next() {
